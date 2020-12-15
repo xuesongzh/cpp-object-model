@@ -1,44 +1,37 @@
+#include <ctime>
 #include <iostream>
 #include <vector>
-#include <ctime>
 
 using namespace std;
 
+//二：继承关系深度增加，开销一般也会增加。构造函数一层一层向前调用C-->B--A(A1)
+//很多情况下，随着继承深度的增加，开销或者说执行时间也会增加；
+//多重继承一般也会导致开销增加
 
-	//二：继承关系深度增加，开销一般也会增加_构造函数一层一层向前调用C-->B--A(A1)
-	//很多情况下，锁着继承深度的增加，开销或者说执行时间也会增加；
-	//（2.1）多重继承一般也会导致开销增加
+class A {
+ public:
+    A() {
+        cout << "A::A()" << endl;
+    }
+};
 
-	class A
-	{
-	public:
-		A()
-		{
-			cout << "A::A()" << endl;
-		}
-	};
-	class A1
-	{
-	public:
-		A1()
-		{
-			cout << "A1::A1()" << endl;
-		}
-	};
+class A1 {
+ public:
+    A1() {
+        cout << "A1::A1()" << endl;
+    }
+};
 
-	class B :public A, public A1
-	{
-	public:
-	};
+class B : public A, public A1 {
+ public:
+};
 
-	class C :public B
-	{
-	public:
-		C()
-		{
-			cout << "C::C()" << endl;
-		}
-	};
+class C : public B {
+ public:
+    C() {
+        cout << "C::C()" << endl;
+    }
+};
 
 /*
  00291FB0  push        ebp  
@@ -59,20 +52,10 @@ using namespace std;
 00291FD6  call        B::B (029139Dh)  
 			cout << "C::C()" << endl;//编译器在构造函数中插入代码--构造函数一层一层向父类调用
  */
-	void func()
-	{
-		C cobj;
 
-	}
+int main() {
+    C cobj;
 
-
-int main()
-{
-	func();
-		
-	system("pause");
-	return 1;
+    system("pause");
+    return 1;
 }
-
-
-
